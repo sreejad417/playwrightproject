@@ -1,0 +1,22 @@
+import { test, expect } from "@playwright/test";
+import { createUser } from "../utils/userFactory";
+
+test("TC05 - Register with existing email", async ({ page }) => {
+  const email = `sreeja${Date.now()}@test.com`;
+  const password = "Password123";
+  const name = "Sreeja";
+
+  // Step 1: Create user first
+  await createUser(page, email, password, name);
+
+  // Step 2: Go to signup again
+  await page.locator('a[href="/login"]').click();
+
+  // Step 3: Try registering with same email
+  await page.fill('input[data-qa="signup-name"]', name);
+  await page.fill('input[data-qa="signup-email"]', email);
+  await page.locator('button[data-qa="signup-button"]').click();
+
+  // Step 4: Validate error
+  await expect(page.getByText("Email Address already exist!")).toBeVisible();
+});
