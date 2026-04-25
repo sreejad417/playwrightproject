@@ -32,7 +32,7 @@ test("TC01 - Register User", async ({ page }) => {
   await page.fill("#zipcode", "48187");
   await page.fill("#mobile_number", "9876543210");
   await page.locator('button[data-qa="create-account"]').click();
-  await expect(page.locator('b:has-text("Account Created!")')).toBeVisible();
+  await expect(page.getByText("ACCOUNT CREATED!")).toBeVisible();
   await page.locator('a[data-qa="continue-button"]').click();
   await expect(page.locator('a:has-text("Logged in as")')).toBeVisible();
   await page.locator('a[href="/delete_account"]').click();
